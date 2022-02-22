@@ -4,7 +4,10 @@ const chalk = require("chalk");
 const express = require("express");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const cors = require("cors");
 const { notFoundError, generalError } = require("./middlewares/errors");
+const plantsRouter = require("./routes/plantsRouter");
+const usersRouter = require("./routes/usersRouter");
 
 const app = express();
 
@@ -20,8 +23,12 @@ const startServer = (port) =>
     });
   });
 
+app.use(cors());
 app.use(morgan("dev"));
 app.use(helmet());
+
+app.use("/plants", plantsRouter);
+app.use("/login", usersRouter);
 
 app.use(notFoundError);
 app.use(generalError);
